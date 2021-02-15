@@ -24,22 +24,26 @@
             <div class="pz-workspace-header">
                 <div class="pz-workspace-header-wrapper">
                     <h2>
-                        <Input v-model="schemaName" style="width: 150px" />
+                        <Input v-model="schemaName" style="width: 150px"/>
                         <span>[{{ mode.label }}]</span>
                     </h2>
 
                     <div class="view-port-switcher">
-                        <a href="javascript:void(0)" :class="`${mode.type} ${mode.type == 'xs' ? 'active' :''}`" @click="setMode('xs', 'Утас')">
-                            <Icon type="ios-phone-portrait" />
+                        <a href="javascript:void(0)" :class="`${mode.type} ${mode.type == 'xs' ? 'active' :''}`"
+                           @click="setMode('xs', 'Утас')">
+                            <Icon type="ios-phone-portrait"/>
                         </a>
-                        <a href="javascript:void(0)" :class="`${mode.type} ${mode.type == 'sm' ? 'active' :''}`" @click="setMode('sm', 'Таблет')">
-                            <Icon type="ios-tablet-portrait" />
+                        <a href="javascript:void(0)" :class="`${mode.type} ${mode.type == 'sm' ? 'active' :''}`"
+                           @click="setMode('sm', 'Таблет')">
+                            <Icon type="ios-tablet-portrait"/>
                         </a>
-                        <a href="javascript:void(0)" :class="`${mode.type} ${mode.type == 'md' ? 'active' :''}`" @click="setMode('md', 'Компьютер')">
-                            <Icon type="ios-laptop" />
+                        <a href="javascript:void(0)" :class="`${mode.type} ${mode.type == 'md' ? 'active' :''}`"
+                           @click="setMode('md', 'Компьютер')">
+                            <Icon type="ios-laptop"/>
                         </a>
-                        <a href="javascript:void(0)" :class="`${mode.type} ${mode.type == 'lg' ? 'active' :''}`" @click="setMode('lg', 'Том компьютер')">
-                            <Icon type="ios-desktop-outline" />
+                        <a href="javascript:void(0)" :class="`${mode.type} ${mode.type == 'lg' ? 'active' :''}`"
+                           @click="setMode('lg', 'Том компьютер')">
+                            <Icon type="ios-desktop-outline"/>
                         </a>
                     </div>
 
@@ -55,7 +59,7 @@
                     <div class="grid-schema-shadow">
                         <Row :gutter="16">
                             <Col v-for="col in 12" :span="2" :key="col.index">
-                            <div class="col-shadow"></div>
+                                <div class="col-shadow"></div>
                             </Col>
                         </Row>
                     </div>
@@ -76,27 +80,32 @@
                                 </div>
 
                                 <Col v-for="(col, index) in row.children" :span="col.span[mode.type]" :key="index">
-                                <div class="pz-col easing">
-                                    <div class="pz-col-control">
-                                        <div class="pz-col-control-items">
-                                            <a href="javascript:void(0)" @click="deleteFromSchema(col.id)">
-                                                <Icon type="android-close"></Icon>
-                                            </a>
+                                    <div class="pz-col easing">
+                                        <div class="pz-col-control">
+                                            <div class="pz-col-control-items">
+                                                <a href="javascript:void(0)" @click="deleteFromSchema(col.id)">
+                                                    <Icon type="android-close"></Icon>
+                                                </a>
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <draggable v-model="col.children" :options="{group:'element'}" class="pz-holder">
-                                        <component v-for="item in col.children" :key="item.index" v-if="item.type == 'html'" :is="item.element">
-                                            <editable :content="item.content" @update="item.content = $event" :el="item.element"></editable>
-                                        </component>
-                                        <chart v-for="item in col.children" :key="item.index" v-if="item.type == 'chart'" :src="`/lambda/puzzle/schema/chart/${item.id}`"></chart>
-                                    </draggable>
-                                    <div class="resizer" @mousedown="handleResize($event, col.id)"></div>
-                                </div>
+                                        <draggable v-model="col.children" :options="{group:'element'}"
+                                                   class="pz-holder">
+                                            <component v-for="item in col.children" :key="item.index"
+                                                       v-if="item.type == 'html'" :is="item.element">
+                                                <editable :content="item.content" @update="item.content = $event"
+                                                          :el="item.element"></editable>
+                                            </component>
+                                            <chart v-for="item in col.children" :key="item.index"
+                                                   v-if="item.type == 'chart'"
+                                                   :src="`/lambda/puzzle/schema/chart/${item.id}`"></chart>
+                                        </draggable>
+                                        <div class="resizer" @mousedown="handleResize($event, col.id)"></div>
+                                    </div>
                                 </Col>
 
                                 <Col span="2">
-                                <div :class="`pz-new-col easing ${mode.type}`" @click="addCol(row.id)"></div>
+                                    <div :class="`pz-new-col easing ${mode.type}`" @click="addCol(row.id)"></div>
                                 </Col>
                             </Row>
                         </draggable>
@@ -112,7 +121,7 @@
 import draggable from "vuedraggable";
 import editable from "./editable";
 import data from "./utils/data";
-import { idGenerator } from "./utils/methods";
+import {idGenerator} from "./utils/methods";
 
 export default {
     props: ["editMode", "src", "onCreate", "onUpdate"],
@@ -130,7 +139,7 @@ export default {
         idGenerator: idGenerator,
 
         getCharts() {
-            axios.get("/lambda/puzzle/schema/chart").then(({ data }) => {
+            axios.get("/lambda/puzzle/schema/chart").then(({data}) => {
                 this.charts = data.data;
             });
         },
@@ -194,7 +203,7 @@ export default {
 
         duplicateRow(id, index) {
             let vm = this;
-            let rowClone = _.cloneDeep(_.find(vm.schema, { id: id }), true);
+            let rowClone = _.cloneDeep(_.find(vm.schema, {id: id}), true);
             rowClone.id = idGenerator("row");
             this.schema.splice(index, 0, rowClone);
         },
@@ -215,7 +224,7 @@ export default {
                 children: []
             };
 
-            _.find(vm.schema, { id: parentId })["children"].push(colItem);
+            _.find(vm.schema, {id: parentId})["children"].push(colItem);
         },
 
         //Element positioning
@@ -290,11 +299,11 @@ export default {
 
         findInSchema(id) {
             return _(this.schema)
-                .thru(function(coll) {
+                .thru(function (coll) {
                     return _.union(coll, _.map(coll, "children"));
                 })
                 .flatten()
-                .find({ id: id });
+                .find({id: id});
         },
 
         removeFromTree(parent, childNameToRemove) {
@@ -327,7 +336,7 @@ export default {
                 ? this.$props.src
                 : `/lambda/puzzle/schema/moqup`;
 
-            axios.post(submitUrl, data).then(({ data }) => {
+            axios.post(submitUrl, data).then(({data}) => {
                 if (data.status) {
                     this.$Message.success("Амжилттай хадгаллаа");
                     this.$props.onCreate();
@@ -341,5 +350,5 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-    @import "./scss/style.scss"
+@import "./scss/style.scss"
 </style>
