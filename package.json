@@ -1,5 +1,5 @@
 {
-    "name": "moqup",
+    "name": "@lambda-platform/moqup",
     "version": "1.0.0",
     "description": "lambda moqup module",
     "main": "src/index.js",
@@ -46,5 +46,8 @@
         "> 1%",
         "last 2 versions",
         "not dead"
-    ]
+    ],
+    "publishConfig": {
+        "access": "public"
+    }
 }
